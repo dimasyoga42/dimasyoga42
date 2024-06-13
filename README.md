@@ -3,7 +3,7 @@
 
 
 
-## ðŸš€ About Me
+## 🚀 About Me
 I am a student, and have a hobby of coding and writing
 
 
