@@ -1,4 +1,4 @@
-
+<div align="center"><img src="https://i.imgur.com/KXx0cCx.gif" width="373.5px" height="208.5px"></div>
 <h1 align="center">Hi, I'm Dimas yoga</a>!</h1>
 <h3 align="center">Welcome to my GitHub profile :3</h3>
 <p align="center">I'm currently working on Software, Anime / Manga, web Dev, and Content Creation.</p>
@@ -18,4 +18,5 @@
 <div align="center">
 
   ![](https://github-readme-stats.vercel.app/api?username=dimasyoga42&theme=radical&hide_border=false&include_all_commits=true&count_private=true)<br/>
+
 </div>
