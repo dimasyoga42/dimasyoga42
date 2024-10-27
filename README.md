@@ -1,12 +1,2 @@
-## hello I'm dimas yoga
 
-
-
-
-## 🚀 About Me
-I am a student, and have a hobby of coding and writing
-
-
-## website
-- [portfolio](https://dimasyoga44.vercel.app)
-- [api-asmaul](https://api-asmaul-husnah.vercel.app/)
+![](https://github-readme-stats.vercel.app/api?username=dimasyoga42&theme=radical&hide_border=false&include_all_commits=true&count_private=true)<br/>
