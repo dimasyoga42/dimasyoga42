@@ -6,6 +6,6 @@
     🎮 Music • Games • Anime • Code 
 </pre>
 
-  ![](https://github-readme-stats.vercel.app/api?username=dimasyoga42&theme=tokyonight&hide_border=false&include_all_commits=true&count_private=true)
+  ![](https://github-readme-stats.vercel.app/api?username=dimasyoga42&theme=dark&hide_border=false&include_all_commits=true&count_private=true)
 
 </div>
