@@ -1,4 +1,4 @@
-<div align="center">
+<div align = "center" >
 <img src="https://readme-typing-svg.demolab.com?font=Inconsolata&weight=500&size=50&duration=4000&pause=300&color=A7A459&center=true&vCenter=true&multiline=true&repeat=false&random=false&width=1300&height=140&lines=halo nama saya dimas yoga" width="70%" />
 <br><br>
 <pre>
@@ -6,18 +6,6 @@
     🎮 Music • Games • Anime • Code 
 </pre>
 
-
-
-
-## stats
-<div align="center">
-
-  ![](https://github-readme-stats.vercel.app/api?username=dimasyoga42&theme=tokyonight&hide_border=false&include_all_commits=true&count_private=true)<br/>
-
-  <p><img align="center" src="https://github-readme-streak-stats.herokuapp.com/?user=dimasyoga42&" alt="dimasyoga42" /></p>
-
-  ![](https://github-readme-stats.vercel.app/api/top-langs/?username=dimasyoga42&theme=tokyonight&hide_border=false&include_all_commits=false&count_private=false&layout=compact)
-
-
+  ![](https://github-readme-stats.vercel.app/api?username=dimasyoga42&theme=tokyonight&hide_border=false&include_all_commits=true&count_private=true)
 
 </div>
