@@ -3,7 +3,8 @@
 - 🧑‍💻 Web Developer & Student at Universitas Muhammadiyah Pringsewu
 - 🌐 I love building website with JavaScript
 - ⚡ Favorite stack: React, Express, Node.js, MongoDB
-- 📫 Reach me on: [Instagram if available]
+- 📫 Reach me on:
+- instagram: [dimasyoga42](https://www.instagram.com/dimasyoga_42/)
   
 🌱 I’m currently learning:
 - Fullstack development with **React**, **Next.js**, **Node.js**, and **MongoDB**
@@ -36,7 +37,7 @@
 </p>
 
 📫 How to reach me:
-- Email: dimasyoga42@email.com *(ganti sesuai yang kamu mau)*
+- Email: dimasyoga9090@email.com *
 - Instagram: [dimasyoga42](https://www.instagram.com/dimasyoga_42/) 
 
 ---
