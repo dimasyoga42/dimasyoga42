@@ -35,11 +35,9 @@
   <img src="https://github-readme-stats.vercel.app/api?username=dimasyoga42&show_icons=true&theme=github_dark&hide=issues" alt="GitHub Stats"/>
   <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=dimasyoga42&layout=compact&theme=github_dark" alt="Top Languages"/>
 </p>
-
-📫 How to reach me:
-- Email: dimasyoga9090@email.com *
-- Instagram: [dimasyoga42](https://www.instagram.com/dimasyoga_42/) 
-
+<p>
+  <img src="github-user-contribution.svg" />
+</p>
 ---
 
 🧠 Fun fact: I enjoy coding while listening to chill anime OSTs 🎧 and tweaking UIs until they're just right 🎨
