@@ -16,7 +16,7 @@ jobs:
           token: ${{ secrets.METRICS_TOKEN }}
           # Output action
           output_action: gist
-          committer_gist: f6bde8f031f2ae05fed689f2283fd028
+          committer_gist: 287f369d91899ffad3c55becf7ddc690
 
           # Options
           user: dimasyoga42
