@@ -25,19 +25,12 @@
   <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white"/>
 </p>
 
+---
+
 🔭 Projects I'm proud of:
 - 📝 [Privmarkdown](https://github.com/dimasyoga42/privmarkdown): Private Markdown file viewer for managing personal notes securely.
 - 📖 [Quranku](https://github.com/dimasyoga42/Quranku): Digital Quran app with translations and simple navigation.
 - 🛒 [Fullstack Game Store Dashboard](https://github.com/dimasyoga42/fullstack-store-dashboard): Admin dashboard with product management, inventory, and order tracking.
 
-📈 GitHub Stats:
-<p>
-  <img src="https://github-readme-stats.vercel.app/api?username=dimasyoga42&show_icons=true&theme=github_dark&hide=issues" alt="GitHub Stats"/>
-  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=dimasyoga42&layout=compact&theme=github_dark" alt="Top Languages"/>
-</p>
-<p>
-  <img src="github-user-contribution.svg" />
-</p>
 ---
-
 🧠 Fun fact: I enjoy coding while listening to chill anime OSTs 🎧 and tweaking UIs until they're just right 🎨
