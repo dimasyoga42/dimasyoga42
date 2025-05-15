@@ -15,4 +15,8 @@ jobs:
           user: dimasyoga42
           template: classic
           base: header, activity, community, repositories, metadata
+          plugin_anilist: yes
+          plugin_anilist_medias: anime
+          plugin_anilist_sections: favorites, watching
+          plugin_anilist_limit: 1
           config_timezone: Asia/Jakarta
