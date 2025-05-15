@@ -2,6 +2,8 @@ name: Metrics
 on:
   schedule: [{ cron: "0 * * * *" }] # setiap jam
   workflow_dispatch:
+permissions:
+  contents: write
 
 jobs:
   github-metrics:
