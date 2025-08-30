@@ -25,5 +25,6 @@
 
 ##  Kontak  
 - **GitHub:** [dimasyoga42](https://github.com/dimasyoga42)  
-- **Instagram:** [dimasyoga_42](https://instagram.com/diasyoga_42)  
+- **Instagram:** [dimasyoga_42](https://www.instagram.com/dimasyoga_42/)  
+
 
