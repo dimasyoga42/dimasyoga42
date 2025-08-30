@@ -14,12 +14,8 @@
 ---
 
 ##  Projects & Highlights  
-- 🤖 Membuat **bot WhatsApp** berbasis Baileys (fitur bio, quiz, dan game)  
-- 🗂️ Mengembangkan **file explorer Neovim** mirip VS Code  
-- 🎨 Membangun **framework CSS sendiri** terinspirasi dari Tailwind  
-- 📚 Menulis novel **"Satu Atap"** (romansa-drama) dan **novel berbasis stats D&D**  
-- 🎮 Belajar **game development** dengan Love2D & Rust  
-
+- Membuat bot Whatsapp instraktif untuk game Toram online [link](https://github.com/dimasyoga42/cupyofficial)
+- Markpriview - teks editor berbasis web yang ringan dan menawaran live priview [Link](https://github.com/dimasyoga42/privmarkdown)
 ---
 
 ## Goals  
@@ -30,3 +26,4 @@
 ##  Kontak  
 - **GitHub:** [dimasyoga42](https://github.com/dimasyoga42)  
 - **Instagram:** [dimasyoga_42](https://instagram.com/diasyoga_42)  
+
