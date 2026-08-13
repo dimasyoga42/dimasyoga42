@@ -129,35 +129,30 @@ def print_report(report):
         print(f"{language:<20}{percentage:>11.2f}%{size:>15,}")
 
 
-# Language colors used by GitHub's linguist, for the progress-bar look.
-LANGUAGE_COLORS = {}
+BAR_WIDTH = 25
+BAR_FILLED_CHAR = "█"
+BAR_EMPTY_CHAR = "░"
 
 
-def build_markdown_block(report, language_colors):
-    """Build a Markdown table + inline progress bar for the top languages."""
-    lines = ["**Most Used Languages**", ""]
+def build_markdown_block(report, language_colors=None, bar_width=BAR_WIDTH):
+    """Build a monospace ASCII bar-chart block, similar to WakaTime-style cards.
 
-    # Single-line stacked bar (like GitHub's repo language bar).
-    bar_segments = []
+    Example line:
+        C                  █████████████████░░░░░░░  17.92 %
+    """
+    if not report:
+        return ""
+
+    name_width = max(len(language) for language, _, _ in report) + 2
+    max_percentage = max(percentage for _, percentage, _ in report)
+
+    lines = ["```text"]
     for language, percentage, _ in report:
-        color = language_colors.get(language) or "#858585"
-        width = max(percentage, 1)
-        bar_segments.append(
-            f'<span style="background-color:{color};width:{width:.2f}%;'
-            f'display:inline-block;height:10px;"></span>'
-        )
-    lines.append("<div style=\"display:flex;width:100%;\">" + "".join(bar_segments) + "</div>")
-    lines.append("")
-
-    # Table with percentages.
-    lines.append("| Language | Percentage |")
-    lines.append("|---|---|")
-    for language, percentage, _ in report:
-        color = language_colors.get(language) or "#858585"
-        lines.append(
-            f"| ![#{language}](https://img.shields.io/badge/-{'%20'.join(language.split())}"
-            f"-{color.lstrip('#')}?style=flat-square) | {percentage:.2f}% |"
-        )
+        filled = round(bar_width * percentage / max_percentage)
+        filled = min(filled, bar_width)
+        bar = (BAR_FILLED_CHAR * filled) + (BAR_EMPTY_CHAR * (bar_width - filled))
+        lines.append(f"{language:<{name_width}}{bar}  {percentage:5.2f} %")
+    lines.append("```")
 
     return "\n".join(lines)
 
