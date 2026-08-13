@@ -129,13 +129,69 @@ def print_report(report):
         print(f"{language:<20}{percentage:>11.2f}%{size:>15,}")
 
 
+# Language colors used by GitHub's linguist, for the progress-bar look.
+LANGUAGE_COLORS = {}
+
+
+def build_markdown_block(report, language_colors):
+    """Build a Markdown table + inline progress bar for the top languages."""
+    lines = ["**Most Used Languages**", ""]
+
+    # Single-line stacked bar (like GitHub's repo language bar).
+    bar_segments = []
+    for language, percentage, _ in report:
+        color = language_colors.get(language, "#858585")
+        width = max(percentage, 1)
+        bar_segments.append(
+            f'<span style="background-color:{color};width:{width:.2f}%;'
+            f'display:inline-block;height:10px;"></span>'
+        )
+    lines.append("<div style=\"display:flex;width:100%;\">" + "".join(bar_segments) + "</div>")
+    lines.append("")
+
+    # Table with percentages.
+    lines.append("| Language | Percentage |")
+    lines.append("|---|---|")
+    for language, percentage, _ in report:
+        color = language_colors.get(language, "#858585")
+        lines.append(
+            f"| ![#{language}](https://img.shields.io/badge/-{'%20'.join(language.split())}"
+            f"-{color.lstrip('#')}?style=flat-square) | {percentage:.2f}% |"
+        )
+
+    return "\n".join(lines)
+
+
+def update_readme(markdown_block, readme_path="README.md"):
+    """Replace the content between the START/END markers inside README.md."""
+    start_marker = "<!--START_LANGUAGE_STATS-->"
+    end_marker = "<!--END_LANGUAGE_STATS-->"
+
+    with open(readme_path, "r", encoding="utf-8") as handle:
+        content = handle.read()
+
+    if start_marker not in content or end_marker not in content:
+        raise RuntimeError(
+            f"Could not find {start_marker} / {end_marker} markers in {readme_path}. "
+            "Add them to your README.md where you want the language stats to appear."
+        )
+
+    before = content.split(start_marker)[0]
+    after = content.split(end_marker)[1]
+
+    new_content = f"{before}{start_marker}\n{markdown_block}\n{end_marker}{after}"
+
+    with open(readme_path, "w", encoding="utf-8") as handle:
+        handle.write(new_content)
+
+
 def main():
     access_token = require_env("ACCESS_TOKEN")
     username = require_env("USER_NAME")
     headers = {"authorization": f"token {access_token}"}
 
     print(f"Fetching language stats for {username}...\n")
-    language_totals, _ = fetch_language_bytes(username, headers)
+    language_totals, language_colors = fetch_language_bytes(username, headers)
     report = format_language_report(language_totals, top_n=10)
 
     if not report:
@@ -143,6 +199,10 @@ def main():
         return
 
     print_report(report)
+
+    markdown_block = build_markdown_block(report, language_colors)
+    update_readme(markdown_block)
+    print("\nREADME.md updated with language stats.")
 
 
 if __name__ == "__main__":
