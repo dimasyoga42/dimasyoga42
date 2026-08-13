@@ -140,7 +140,7 @@ def build_markdown_block(report, language_colors):
     # Single-line stacked bar (like GitHub's repo language bar).
     bar_segments = []
     for language, percentage, _ in report:
-        color = language_colors.get(language, "#858585")
+        color = language_colors.get(language) or "#858585"
         width = max(percentage, 1)
         bar_segments.append(
             f'<span style="background-color:{color};width:{width:.2f}%;'
@@ -153,7 +153,7 @@ def build_markdown_block(report, language_colors):
     lines.append("| Language | Percentage |")
     lines.append("|---|---|")
     for language, percentage, _ in report:
-        color = language_colors.get(language, "#858585")
+        color = language_colors.get(language) or "#858585"
         lines.append(
             f"| ![#{language}](https://img.shields.io/badge/-{'%20'.join(language.split())}"
             f"-{color.lstrip('#')}?style=flat-square) | {percentage:.2f}% |"
