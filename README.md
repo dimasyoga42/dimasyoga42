@@ -23,5 +23,5 @@ Moto: Tetap ngoding Js di manapun anda berada
 
 ## Stats Github
 
-![dimasyoga42 GitHub stats](https://github-readme-stats.vercel.app/api?username=dimasyoga42&show_icons=true)
-![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=dimasyoga42&stats_format=bytes&layout=donut)
+<!--START_LANGUAGE_STATS-->
+<!--END_LANGUAGE_STATS-->
