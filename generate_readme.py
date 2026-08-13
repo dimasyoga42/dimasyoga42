@@ -1,117 +1,148 @@
-"""Run the profile README generator with GitHub Actions-safe public statistics.
+"""Generate a breakdown of programming languages used across a GitHub user's repositories.
 
-GitHub's built-in ``GITHUB_TOKEN`` is scoped to the current repository. It can
-resolve a user's repository connection but cannot read nested fields, such as
-stargazer counts, from the user's other repositories. Public owner repository
-statistics are therefore fetched through GitHub's public REST endpoint, while
-the existing authenticated GraphQL logic remains available for the rest of the
-generator.
+Uses the GitHub GraphQL API to fetch the language byte-size breakdown for every
+repository the user owns, then aggregates and prints the overall percentage per language.
+
+Requires the same environment variables as today.py:
+    ACCESS_TOKEN - a GitHub personal access token
+    USER_NAME    - the GitHub username to analyze
 """
 
+import os
+
 import requests
+from dotenv import load_dotenv
 
-import today
+load_dotenv()
 
-PUBLIC_REPOSITORIES_URL = "https://api.github.com/users/{username}/repos"
-PUBLIC_PAGE_SIZE = 100
-_PUBLIC_STATS_CACHE = None
+GITHUB_GRAPHQL_URL = "https://api.github.com/graphql"
 
 
-def public_repository_stats(username):
-    """Return public owner repository and star totals using the REST API."""
-    global _PUBLIC_STATS_CACHE
+def require_env(name):
+    value = os.getenv(name)
+    if value:
+        return value
+    raise RuntimeError(f"Missing required environment variable: {name}")
 
-    if _PUBLIC_STATS_CACHE is not None:
-        return _PUBLIC_STATS_CACHE
 
-    repository_count = 0
-    star_count = 0
-    page = 1
-
-    while True:
-        response = requests.get(
-            PUBLIC_REPOSITORIES_URL.format(username=username),
-            params={
-                "type": "owner",
-                "sort": "full_name",
-                "direction": "asc",
-                "per_page": PUBLIC_PAGE_SIZE,
-                "page": page,
-            },
-            headers={
-                "Accept": "application/vnd.github+json",
-                "X-GitHub-Api-Version": "2022-11-28",
-                "User-Agent": "Vikbg-profile-readme",
-            },
-            timeout=30,
+def graphql_request(query, variables, headers):
+    response = requests.post(
+        GITHUB_GRAPHQL_URL,
+        json={"query": query, "variables": variables},
+        headers=headers,
+        timeout=30,
+    )
+    if response.status_code != 200:
+        raise RuntimeError(
+            f"Request failed with status {response.status_code}: {response.text}"
         )
-
-        if response.status_code != 200:
-            raise RuntimeError(
-                "public_repository_stats failed with status "
-                f"{response.status_code}: {response.text}"
-            )
-
-        repositories = response.json()
-        if not isinstance(repositories, list):
-            raise RuntimeError(
-                "public_repository_stats returned an unexpected response: "
-                f"{repositories}"
-            )
-
-        repository_count += len(repositories)
-        star_count += sum(
-            int(repository.get("stargazers_count", 0))
-            for repository in repositories
-        )
-
-        if len(repositories) < PUBLIC_PAGE_SIZE:
-            break
-        page += 1
-
-    _PUBLIC_STATS_CACHE = {
-        "repos": repository_count,
-        "stars": star_count,
-    }
-    return _PUBLIC_STATS_CACHE
+    payload = response.json()
+    if payload.get("errors"):
+        raise RuntimeError(f"GraphQL errors: {payload['errors']}")
+    return payload["data"]
 
 
-def repository_connection_count(owner_affiliation):
-    """Count repositories without requesting fields blocked for integrations."""
+def fetch_language_bytes(username, headers, owner_affiliations=None):
+    """Return a dict of {language_name: total_bytes} across all repos owned by the user."""
+    if owner_affiliations is None:
+        owner_affiliations = ["OWNER"]
+
     query = """
-    query ($owner_affiliation: [RepositoryAffiliation], $login: String!) {
+    query ($login: String!, $owner_affiliation: [RepositoryAffiliation], $cursor: String) {
         user(login: $login) {
-            repositories(ownerAffiliations: $owner_affiliation) {
-                totalCount
+            repositories(
+                first: 100
+                after: $cursor
+                ownerAffiliations: $owner_affiliation
+                isFork: false
+            ) {
+                edges {
+                    node {
+                        name
+                        languages(first: 10, orderBy: {field: SIZE, direction: DESC}) {
+                            edges {
+                                size
+                                node {
+                                    name
+                                    color
+                                }
+                            }
+                        }
+                    }
+                }
+                pageInfo {
+                    endCursor
+                    hasNextPage
+                }
             }
         }
     }"""
-    data = today.graphql_request(
-        "repository_connection_count",
-        query,
-        {
-            "owner_affiliation": owner_affiliation,
-            "login": today.USER_NAME,
-        },
+
+    language_totals = {}
+    language_colors = {}
+    cursor = None
+
+    while True:
+        variables = {
+            "login": username,
+            "owner_affiliation": owner_affiliations,
+            "cursor": cursor,
+        }
+        data = graphql_request(query, variables, headers)
+        repositories = data["user"]["repositories"]
+
+        for edge in repositories["edges"]:
+            for lang_edge in edge["node"]["languages"]["edges"]:
+                lang_name = lang_edge["node"]["name"]
+                lang_size = lang_edge["size"]
+                language_totals[lang_name] = language_totals.get(lang_name, 0) + lang_size
+                language_colors[lang_name] = lang_edge["node"]["color"]
+
+        if not repositories["pageInfo"]["hasNextPage"]:
+            break
+        cursor = repositories["pageInfo"]["endCursor"]
+
+    return language_totals, language_colors
+
+
+def format_language_report(language_totals, top_n=10):
+    """Turn a {language: bytes} dict into a sorted list of (language, percentage, bytes)."""
+    total_bytes = sum(language_totals.values())
+    if total_bytes == 0:
+        return []
+
+    sorted_languages = sorted(
+        language_totals.items(), key=lambda item: item[1], reverse=True
     )
-    return int(data["user"]["repositories"]["totalCount"])
+
+    report = []
+    for language, size in sorted_languages[:top_n]:
+        percentage = (size / total_bytes) * 100
+        report.append((language, percentage, size))
+    return report
 
 
-def actions_safe_repo_stats(count_type, owner_affiliation):
-    """Replacement for today.graph_repos_stars that works with GITHUB_TOKEN."""
-    today.query_count("graph_repos_stars")
-    affiliations = list(owner_affiliation)
-
-    if affiliations == ["OWNER"]:
-        return public_repository_stats(today.USER_NAME).get(count_type, 0)
-    if count_type == "repos":
-        return repository_connection_count(affiliations)
-    return 0
+def print_report(report):
+    print(f"{'Language':<20}{'Percentage':>12}{'Bytes':>15}")
+    print("-" * 47)
+    for language, percentage, size in report:
+        print(f"{language:<20}{percentage:>11.2f}%{size:>15,}")
 
 
 def main():
-    today.graph_repos_stars = actions_safe_repo_stats
-    today.main()
+    access_token = require_env("ACCESS_TOKEN")
+    username = require_env("USER_NAME")
+    headers = {"authorization": f"token {access_token}"}
+
+    print(f"Fetching language stats for {username}...\n")
+    language_totals, _ = fetch_language_bytes(username, headers)
+    report = format_language_report(language_totals, top_n=10)
+
+    if not report:
+        print("No language data found. Repos might be empty or all forks.")
+        return
+
+    print_report(report)
 
 
 if __name__ == "__main__":
