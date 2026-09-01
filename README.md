@@ -47,7 +47,8 @@
 Name: Dimas yoga
 Region: Indonesia
 City: Bandar Lampung
-favorite: Coding 
+favorite: Coding
+Owner website https://app.shinraapi.cloud/
 ```
 
 
