@@ -10,7 +10,7 @@ Owner website https://app.shinraapi.cloud/
 
 <!--START_LANGUAGE_STATS-->
 ```text
-JavaScript        █████████████████████████  90.15 %
+JavaScript        █████████████████████████  90.16 %
 Go                █░░░░░░░░░░░░░░░░░░░░░░░░   4.15 %
 Python            █░░░░░░░░░░░░░░░░░░░░░░░░   2.78 %
 CSS               ░░░░░░░░░░░░░░░░░░░░░░░░░   1.32 %
